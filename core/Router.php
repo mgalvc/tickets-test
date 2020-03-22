@@ -6,8 +6,14 @@ class Router {
             $requestedRoute = $_REQUEST["r"];
 
             if($requestedRoute == $resource) {
-                $execute();
+                $body = json_decode(file_get_contents('php://input'), true);
+                $execute($body);
             }
         }
+    }
+
+    public static function send($body) {
+        echo json_encode($body);
+        die();
     }
 }
