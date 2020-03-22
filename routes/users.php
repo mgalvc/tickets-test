@@ -4,8 +4,14 @@ $router->on("GET", "users", function() {
     echo "GET request to users";
 });
 
-$router->on("POST", "users", function() {
-    echo "POST request to users";
+$router->on("POST", "users", function($body) {
+    $validation = User::validate($body);
+    if(!empty($validation["success"])) {
+        $user = new User($body);
+        $user->save();
+    } else {
+        Router::send($validation);
+    }
 });
 
 $router->on("PUT", "users", function() {
