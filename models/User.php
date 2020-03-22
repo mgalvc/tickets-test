@@ -1,7 +1,5 @@
 <?php 
 
-include("BaseModel.php");
-
 class User extends BaseModel {
     private $login;
     private $password;
@@ -16,7 +14,28 @@ class User extends BaseModel {
     }
 
     public function save() {
-        BaseModel::insert(["algo"]);
+        $now = new DateTime();
+        $this->created_at = $now->format("Y-m-d H:i:s");
+        return $this->insert($this->get_array_data());
+    }
+
+    public function get_array_data() {
+        $data = [
+            "login" => $this->login,
+            "password" => $this->password,
+            "public_name" => $this->public_name,
+            "created_at" => $this->created_at
+        ];
+        
+        if(!empty($this->updated_at)) {
+            $data["updated_at"] = $this->updated_at;
+        }
+
+        if(!empty($this->deleted_at)) {
+            $data["deleted_at"] = $this->deleted_at;
+        }
+        
+        return $data;
     }
 
     public static function validate($data) {

@@ -8,7 +8,8 @@ $router->on("POST", "users", function($body) {
     $validation = User::validate($body);
     if(!empty($validation["success"])) {
         $user = new User($body);
-        $user->save();
+        $response = $user->save();
+        Router::send($response);
     } else {
         Router::send($validation);
     }
