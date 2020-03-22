@@ -4,6 +4,7 @@ class DB {
     const SERVER = "localhost";
     const USERNAME = "root";
     const PASSWORD = "root";
+    const DATABASE = "jestor_test";
 
     private $conn;
     public $connected = true;
