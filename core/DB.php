@@ -19,11 +19,6 @@ class DB {
 
     public function exec($sql) {
         return mysqli_query($this->conn, $sql);
-        // $response = [];
-        // while($row = mysqli_fetch_assoc($result)) {
-        //     array_push($response, $row);
-        // }
-        // return $response;
     }
 
     public function get_error() {
