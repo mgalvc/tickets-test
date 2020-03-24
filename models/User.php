@@ -5,10 +5,12 @@ class User extends BaseModel {
     private $password;
     private $public_name;
 
-    public function __construct($data) {
-        $this->login = $data["login"];
-        $this->password = $data["password"];
-        $this->public_name = $data["public_name"];
+    public function __construct($data = null) {
+        if(!empty($data)) {
+            $this->login = $data["login"];
+            $this->password = $data["password"];
+            $this->public_name = $data["public_name"];
+        }
 
         parent::__construct("users");
     }
@@ -17,6 +19,14 @@ class User extends BaseModel {
         $now = new DateTime();
         $this->created_at = $now->format("Y-m-d H:i:s");
         return $this->insert($this->get_array_data());
+    }
+
+    public function get($id = null) {
+        return $this->select($id);
+    }
+
+    public function remove($id) {
+        return $this->delete($id);
     }
 
     public function get_array_data() {
