@@ -19,8 +19,23 @@ $router->on("POST", "users", function($body) {
     }
 });
 
-$router->on("PUT", "users", function() {
-    echo "PUT request to users";
+$router->on("PUT", "users", function($body) {
+    if(empty($body["id"])) {
+        Router::send([
+            "success" => false,
+            "error" => "id must be provided"
+        ]);
+    }
+
+    if(empty($body["data"])) {
+        Router::send([
+            "success" => false,
+            "error" => "data must be provided"
+        ]);
+    }
+
+    $user = new User();
+    Router::send($user->edit($body["id"], $body["data"]));
 });
 
 $router->on("DELETE", "users", function($body) {
@@ -30,6 +45,7 @@ $router->on("DELETE", "users", function($body) {
             "error" => "id must be provided"
         ]);
     }
+
     $user = new User();
     Router::send($user->remove($body["id"]));
 });
