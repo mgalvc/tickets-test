@@ -8,6 +8,7 @@ class BaseModel {
 
     protected $created_at;
     protected $updated_at;
+    // [TODO] check if deleted_at is really needed
     protected $deleted_at;
 
     protected function __construct($table) {
@@ -55,6 +56,26 @@ class BaseModel {
         }
 
         return $response;
+    }
+
+    protected function update($id, $data) {
+        $set = [];
+
+        foreach ($data as $field => $value) {
+            if(!in_array($field, ["created_at", "deleted_at"])) {
+                array_push($set, "$field = '$value'");
+            }
+        }
+
+        $set = join(",", $set);
+        $sql = "UPDATE $this->table SET $set WHERE id = $id";
+        $result = $this->db->exec($sql);
+
+        if(empty($result)) {
+            return ["success" => false, "error" => $this->db->get_error()];
+        }
+
+        return ["success" => true];
     }
 
     protected function delete($id) {
