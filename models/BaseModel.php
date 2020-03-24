@@ -2,7 +2,7 @@
 
 class BaseModel {
     private $db;
-    protected $table;
+    private $table;
 
     protected $id;
 
@@ -38,5 +38,33 @@ class BaseModel {
         }
 
         return ["success" => true, "inserted_id" => $this->db->get_inserted_id()];
+    }
+
+    protected function select($id = null) {
+        if(empty($id)) {
+            $sql = "SELECT * FROM $this->table";
+        } else {
+            $sql = "SELECT * FROM $this->table WHERE id = $id";
+        }
+
+        $result = $this->db->exec($sql);
+        $response = [];
+
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($response, $row);
+        }
+
+        return $response;
+    }
+
+    protected function delete($id) {
+        $sql = "DELETE FROM $this->table WHERE id = $id";
+        $result = $this->db->exec($sql);
+
+        if(empty($result)) {
+            return ["success" => false, "error" => $this->db->get_error()];
+        }
+
+        return ["success" => true];
     }
 }
