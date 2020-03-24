@@ -25,6 +25,12 @@ class User extends BaseModel {
         return $this->select($id);
     }
 
+    public function edit($id, $data) {
+        $now = new DateTime();
+        $data["updated_at"] = $now->format("Y-m-d H:i:s");
+        return $this->update($id, $data);
+    }
+
     public function remove($id) {
         return $this->delete($id);
     }
