@@ -64,10 +64,6 @@ class Token extends BaseModel {
         }
     }
 
-    public function find($params) {
-        return $this->select_where($params);
-    }
-
     public function remove($token) {
         $result = $this->find(["token" => $token])[0];
         if(empty($result)) {

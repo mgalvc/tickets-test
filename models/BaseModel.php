@@ -21,6 +21,14 @@ class BaseModel {
         $this->table = $table;
     }
 
+    public function save() {
+        $now = new DateTime();
+        $this->created_at = $now->format("Y-m-d H:i:s");
+        return $this->insert($this->get_array_data());
+    }
+
+    public function get_array_data() {}
+
     protected function insert($data) {
         $fields = join(",", array_keys($data));
         $values = array_values($data);
@@ -41,7 +49,11 @@ class BaseModel {
         return ["success" => true, "inserted_id" => $this->db->get_inserted_id()];
     }
 
-    protected function select($id = null) {
+    public function get($id = null) {
+        return $this->select($id);
+    }
+
+    private function select($id = null) {
         if(empty($id)) {
             $sql = "SELECT * FROM $this->table";
         } else {
@@ -58,7 +70,11 @@ class BaseModel {
         return $response;
     }
 
-    protected function select_where($params) {
+    public function find($params) {
+        return $this->select_where($params);
+    }
+
+    private function select_where($params) {
         $where = [];
 
         foreach($params as $field => $value) {
@@ -77,7 +93,13 @@ class BaseModel {
         return $response;
     }
 
-    protected function update($id, $data) {
+    public function edit($id, $data) {
+        $now = new DateTime();
+        $data["updated_at"] = $now->format("Y-m-d H:i:s");
+        return $this->update($id, $data);
+    }
+
+    private function update($id, $data) {
         $set = [];
 
         foreach ($data as $field => $value) {
@@ -95,6 +117,10 @@ class BaseModel {
         }
 
         return ["success" => true];
+    }
+
+    public function remove($id) {
+        return $this->delete($id);
     }
 
     protected function delete($id) {

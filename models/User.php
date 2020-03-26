@@ -15,30 +15,6 @@ class User extends BaseModel {
         parent::__construct("users");
     }
 
-    public function save() {
-        $now = new DateTime();
-        $this->created_at = $now->format("Y-m-d H:i:s");
-        return $this->insert($this->get_array_data());
-    }
-
-    public function get($id = null) {
-        return $this->select($id);
-    }
-
-    public function find($params) {
-        return $this->select_where($params);
-    }
-
-    public function edit($id, $data) {
-        $now = new DateTime();
-        $data["updated_at"] = $now->format("Y-m-d H:i:s");
-        return $this->update($id, $data);
-    }
-
-    public function remove($id) {
-        return $this->delete($id);
-    }
-
     public function get_array_data() {
         $data = [
             "login" => $this->login,
@@ -85,6 +61,7 @@ class User extends BaseModel {
     }
 
     private static function already_exists($login) {
-
+        $user = new User();
+        return !empty($user->find(["login" => $login]));
     }
 }
