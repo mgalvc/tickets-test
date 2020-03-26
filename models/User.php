@@ -25,6 +25,10 @@ class User extends BaseModel {
         return $this->select($id);
     }
 
+    public function find($params) {
+        return $this->select_where($params);
+    }
+
     public function edit($id, $data) {
         $now = new DateTime();
         $data["updated_at"] = $now->format("Y-m-d H:i:s");
