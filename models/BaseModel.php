@@ -58,6 +58,25 @@ class BaseModel {
         return $response;
     }
 
+    protected function select_where($params) {
+        $where = [];
+
+        foreach($params as $field => $value) {
+            array_push($where, "$field = '$value'");
+        }
+
+        $where = join(" AND ", $where);
+        $sql = "SELECT * FROM $this->table WHERE $where";
+        $result = $this->db->exec($sql);
+        $response = [];
+
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($response, $row);
+        }
+
+        return $response;
+    }
+
     protected function update($id, $data) {
         $set = [];
 
