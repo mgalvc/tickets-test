@@ -11,7 +11,7 @@ export const authActions = {
                 Vue.http.headers.common['Authorization'] = `Basic ${response.auth.token}`;
                 let user = new User(response.auth.user_id);
                 user.fetch(user => {
-                    commit('login', user);
+                    commit('login', {user: user, token: response.auth.token});
                     router.push('/tickets');
                 });
             }

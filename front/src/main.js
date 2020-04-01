@@ -11,7 +11,12 @@ Vue.use(AsyncComputed)
 Vue.config.productionTip = false
 
 Vue.use(VueResource);
-Vue.http.options.root = 'http://tickets.test';
+Vue.http.options.root = 'http://localhost:8000';
+
+if(store.getters.token) {
+    console.log(`tem salvo ${store.getters.token}`);
+    Vue.http.headers.common['Authorization'] = `Basic ${store.getters.token}`;
+}
 
 new Vue({
   router,
