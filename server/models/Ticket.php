@@ -4,6 +4,7 @@ class Ticket extends BaseModel {
     private $user_id;
     private $title;
     private $description;
+    private $status;
 
     public function __construct($data = null) {
         if(!empty($data)) {
@@ -13,6 +14,17 @@ class Ticket extends BaseModel {
         }
 
         parent::__construct("tickets");
+    }
+
+    public function get($id = null) {
+        $tickets = $this->select($id);
+        $response = [];
+        foreach ($tickets as $ticket) {
+            $user = new User();
+            $ticket["user_public_name"] = $user->get($ticket["user_id"])[0]["public_name"];
+            array_push($response, $ticket);
+        }
+        return $response;
     }
 
     public function get_array_data() {

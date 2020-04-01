@@ -18,9 +18,11 @@ class Router {
 
     public function verify_token($token) {
         $tokenHandler = new Token();
-        if(empty($tokenHandler->find(["token" => $token]))) {
+        $token = explode(" ", $token);
+        if($token[0] != "Basic" || empty($tokenHandler->find(["token" => $token[1]]))) {
             Router::send(["success" => false, "error" => "unauthenticated"]);
         }
+        // [TODO] expires
     }
 
     public static function send($body) {

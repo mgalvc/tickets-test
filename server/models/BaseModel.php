@@ -53,11 +53,11 @@ class BaseModel {
         return $this->select($id);
     }
 
-    private function select($id = null) {
+    protected function select($id = null) {
         if(empty($id)) {
-            $sql = "SELECT * FROM $this->table";
+            $sql = "SELECT * FROM $this->table ORDER BY created_at DESC";
         } else {
-            $sql = "SELECT * FROM $this->table WHERE id = $id";
+            $sql = "SELECT * FROM $this->table WHERE id = $id ORDER BY created_at DESC";
         }
 
         $result = $this->db->exec($sql);

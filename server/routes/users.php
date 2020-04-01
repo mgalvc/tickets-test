@@ -1,9 +1,9 @@
 <?php
 
-$router->on("GET", "users", function($body) {
+$router->on("GET", "users", function() {
     $users = new User();
-    if(!empty($body["id"])) {
-        Router::send($users->get($body["id"]));
+    if(!empty($_GET["id"])) {
+        Router::send($users->get($_GET["id"]));
     }
     Router::send($users->get());
 });
